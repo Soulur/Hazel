@@ -13,27 +13,6 @@ namespace Hazel {
 
 	Application* Application::s_Instace = nullptr;
 
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-	{
-		switch (type)
-		{
-			case Hazel::ShaderDataType::Float:	return GL_FLOAT;
-			case Hazel::ShaderDataType::Float2:	return GL_FLOAT;
-			case Hazel::ShaderDataType::Float3:	return GL_FLOAT;
-			case Hazel::ShaderDataType::Float4:	return GL_FLOAT;
-			case Hazel::ShaderDataType::Mat3:	return GL_FLOAT;
-			case Hazel::ShaderDataType::Mat4:	return GL_FLOAT;
-			case Hazel::ShaderDataType::Int:	return GL_INT;
-			case Hazel::ShaderDataType::Int2:	return GL_INT;
-			case Hazel::ShaderDataType::Int3:	return GL_INT;
-			case Hazel::ShaderDataType::Int4:	return GL_INT;
-			case Hazel::ShaderDataType::Bool:	return GL_BOOL;
-		}
-		
-		HZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
-		return 0;
-	}
-
 	Application::Application()
 	{
 		HZ_CORE_ASSERT(!s_Instace, "Application already exists!");
@@ -46,8 +25,7 @@ namespace Hazel {
 		PushOverlay(m_ImGuiLayer);
 
 		// Vertex Array
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
+		m_VertexArray.reset(VertexArray::Create());
 
 		float vertices[3 * 7] = {
 			-0.5f , -0.5f , 0.0f, 1.0f , 0.0f , 1.0f , 1.0f,
@@ -56,34 +34,22 @@ namespace Hazel {
 		};
 
 		// Vertex Buffer
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		std::shared_ptr<VertexBuffer> vertexBuffer;
+		std::shared_ptr<IndexBuffer> indexBuffer;
 
-		{
-			BufferLayout layout = {
-				{ ShaderDataType::Float3 , "a_Position" },
-				{ ShaderDataType::Float4 , "a_Color" }
-			};
+		vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
-			m_VertexBuffer->SetLayout(layout);
-		}
-		
-		uint32_t index = 0;
-		const auto& layout = m_VertexBuffer->GetLayout();
-		for (const auto& element : layout)
-		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, 
-				element.GetComponentCount(), 
-				ShaderDataTypeToOpenGLBaseType(element.Type),
-				element.Normalized ? GL_TRUE : GL_FALSE , 
-				layout.GetStride(),
-				(const void*)element.Offset);
-			index++;
-		}
+		BufferLayout layout = {
+			{ ShaderDataType::Float3 , "a_Position" },
+			{ ShaderDataType::Float4 , "a_Color" }
+		};
+		vertexBuffer->SetLayout(layout);
+		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		// Index Buffer
 		uint32_t indices[3] = { 0 , 1 , 2 };
-		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof (uint32_t) ));
+		indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof (uint32_t) ));
+		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 		// Shader
 		std::string vertexSrc = R"(
@@ -119,6 +85,58 @@ namespace Hazel {
 		)";
 		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
 
+		////////////////////////////////////////////////////////////////////////////////////////
+
+		std::shared_ptr<VertexBuffer> t_VertexBuffer;
+		std::shared_ptr<IndexBuffer> t_IndexBuffer;
+
+		// Vertex Array
+		t_VertexArray.reset(VertexArray::Create());
+
+		float t_vertices[3 * 4] = {
+			-0.5f , -0.5f , 0.0f,
+			 0.5f , -0.5f , 0.0f,
+			 0.5f ,  0.5f , 0.0f,
+			-0.5f ,  0.5f , 0.0f,
+		};
+
+		// Vertex Buffer
+		t_VertexBuffer.reset(VertexBuffer::Create(t_vertices, sizeof(t_vertices)));
+
+		BufferLayout t_layout = {
+			{ ShaderDataType::Float3 , "a_Position" }
+		};
+		t_VertexBuffer->SetLayout(t_layout);
+		t_VertexArray->AddVertexBuffer(t_VertexBuffer);
+
+		// Index Buffer
+		uint32_t t_indices[6] = { 0 , 1 , 2 , 2 , 3 , 0 };
+		t_IndexBuffer.reset(IndexBuffer::Create(t_indices, sizeof(t_indices) / sizeof(uint32_t)));
+		t_VertexArray->SetIndexBuffer(t_IndexBuffer);
+
+		// Shader
+		std::string t_vertexSrc = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 a_Position;
+			out vec3 v_Position;
+			void main()
+			{
+				v_Position = a_Position;
+				gl_Position = vec4(a_Position, 1.0);
+			}
+		)";
+
+		std::string t_fragmentSrc = R"(
+			#version 330 core
+
+			layout(location = 0) out vec4 color;
+			void main()
+			{
+				color = vec4(0.0f , 1.0f , 1.0f , 0.1f);
+			}
+		)";
+		t_Shader.reset(new Shader(t_vertexSrc, t_fragmentSrc));
 	}
 
 	Application::~Application()
@@ -160,9 +178,13 @@ namespace Hazel {
 			glClearColor(0.143f, 0.143f, 0.143f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			t_Shader->Bind();
+			t_VertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, t_VertexArray->GetIndexBuffers()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
 			m_Shader->Bind();
-			glBindVertexArray(m_VertexArray);
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			m_VertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffers()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
