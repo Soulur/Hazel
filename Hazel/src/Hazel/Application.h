@@ -45,8 +45,8 @@ namespace Hazel {
 		std::shared_ptr<Shader> m_Shader;
 		std::shared_ptr<VertexArray> m_VertexArray;
 
-		std::shared_ptr<Shader> t_Shader;
-		std::shared_ptr<VertexArray> t_VertexArray;
+		std::shared_ptr<Shader> m_BlueShader;
+		std::shared_ptr<VertexArray> m_BlueVertexArray;
 	private:
 		static Application* s_Instace;
 	};

@@ -3,7 +3,7 @@
 
 #include "Hazel/Log.h"
 
-#include <glad/glad.h>
+#include "Renderer/Renderer.h"
 
 #include "Input.h"
 
@@ -87,13 +87,13 @@ namespace Hazel {
 
 		////////////////////////////////////////////////////////////////////////////////////////
 
-		std::shared_ptr<VertexBuffer> t_VertexBuffer;
-		std::shared_ptr<IndexBuffer> t_IndexBuffer;
+		std::shared_ptr<VertexBuffer> m_BlueVertexBuffer;
+		std::shared_ptr<IndexBuffer> m_BlueIndexBuffer;
 
 		// Vertex Array
-		t_VertexArray.reset(VertexArray::Create());
+		m_BlueVertexArray.reset(VertexArray::Create());
 
-		float t_vertices[3 * 4] = {
+		float m_Bluevertices[3 * 4] = {
 			-0.5f , -0.5f , 0.0f,
 			 0.5f , -0.5f , 0.0f,
 			 0.5f ,  0.5f , 0.0f,
@@ -101,21 +101,21 @@ namespace Hazel {
 		};
 
 		// Vertex Buffer
-		t_VertexBuffer.reset(VertexBuffer::Create(t_vertices, sizeof(t_vertices)));
+		m_BlueVertexBuffer.reset(VertexBuffer::Create(m_Bluevertices, sizeof(m_Bluevertices)));
 
-		BufferLayout t_layout = {
+		BufferLayout m_Bluelayout = {
 			{ ShaderDataType::Float3 , "a_Position" }
 		};
-		t_VertexBuffer->SetLayout(t_layout);
-		t_VertexArray->AddVertexBuffer(t_VertexBuffer);
+		m_BlueVertexBuffer->SetLayout(m_Bluelayout);
+		m_BlueVertexArray->AddVertexBuffer(m_BlueVertexBuffer);
 
 		// Index Buffer
-		uint32_t t_indices[6] = { 0 , 1 , 2 , 2 , 3 , 0 };
-		t_IndexBuffer.reset(IndexBuffer::Create(t_indices, sizeof(t_indices) / sizeof(uint32_t)));
-		t_VertexArray->SetIndexBuffer(t_IndexBuffer);
+		uint32_t m_Blueindices[6] = { 0 , 1 , 2 , 2 , 3 , 0 };
+		m_BlueIndexBuffer.reset(IndexBuffer::Create(m_Blueindices, sizeof(m_Blueindices) / sizeof(uint32_t)));
+		m_BlueVertexArray->SetIndexBuffer(m_BlueIndexBuffer);
 
 		// Shader
-		std::string t_vertexSrc = R"(
+		std::string m_BluevertexSrc = R"(
 			#version 330 core
 
 			layout(location = 0) in vec3 a_Position;
@@ -127,7 +127,7 @@ namespace Hazel {
 			}
 		)";
 
-		std::string t_fragmentSrc = R"(
+		std::string m_BluefragmentSrc = R"(
 			#version 330 core
 
 			layout(location = 0) out vec4 color;
@@ -136,7 +136,7 @@ namespace Hazel {
 				color = vec4(0.0f , 1.0f , 1.0f , 0.1f);
 			}
 		)";
-		t_Shader.reset(new Shader(t_vertexSrc, t_fragmentSrc));
+		m_BlueShader.reset(new Shader(m_BluevertexSrc, m_BluefragmentSrc));
 	}
 
 	Application::~Application()
@@ -174,17 +174,18 @@ namespace Hazel {
 	{
 		while (m_Running)
 		{
+			RenderCommand::SetClearColor( { 0.143f, 0.143f, 0.143f, 1 });
+			RenderCommand::Clear();
 
-			glClearColor(0.143f, 0.143f, 0.143f, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			Renderer::BeginScene();
 
-			t_Shader->Bind();
-			t_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, t_VertexArray->GetIndexBuffers()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			m_BlueShader->Bind();
+			Renderer::Submit(m_BlueVertexArray);
 
 			m_Shader->Bind();
-			m_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffers()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_VertexArray);
+
+			Renderer::EndScene();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
