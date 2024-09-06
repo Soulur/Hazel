@@ -23,7 +23,7 @@ namespace Hazel {
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::API::Node:		HZ_CORE_ASSERT(false, "RendererAPI::Node is currently not suported!"); return nullptr;
+			case RendererAPI::API::Node:	HZ_CORE_ASSERT(false, "RendererAPI::Node is currently not suported!"); return nullptr;
 			case RendererAPI::API::OpenGL:	return new OpenGLIndexBuffer(indices, size);
 		}
 
