@@ -104,7 +104,7 @@ public:
 		m_BlueVertexArray->SetIndexBuffer(m_BlueIndexBuffer);
 
 		// Shader
-		std::string m_BluevertexSrc = R"(
+		std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
 
 			layout(location = 0) in vec3 a_Position;
@@ -120,19 +120,20 @@ public:
 			}
 		)";
 
-		std::string m_BluefragmentSrc = R"(
+		std::string flatColorShaderFragmentSrc = R"(
 			#version 330 core
 
 			layout(location = 0) out vec4 color;
 
 			in vec4 v_Postion;
+			uniform vec4 u_Color;
 
 			void main()
 			{
-				color = vec4(0.2 , 0.3 , 0.8 , 1.0);
+				color = u_Color;
 			}
 		)";
-		m_BlueShader.reset(new Hazel::Shader(m_BluevertexSrc, m_BluefragmentSrc));
+		m_FlatColorShader.reset(new Hazel::Shader(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 	}
 	
 	void OnUpdate(Hazel::Timestep ts) override
@@ -160,7 +161,18 @@ public:
 
 		Hazel::Renderer::BeginScene(m_Camera);
 
-		 glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+		glm::vec4 redColor (0.8f, 0.2f, 0.3f, 1.0f);
+		glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.0f);
+
+		//Hazel::MaterialRef material = new Hazel::Material(m_FlatColorShader);
+		//Hazel::MaterialInstanceRef mi = new Hazel::MaterialInstanceRef(material);
+
+		//mi->SetValue("u_Color", redColor);
+		//mi->SetTexture("u_AlbedoMap", texture);
+		//squareMesh->SetMaterial(mi);
+		
 		
 		for (int y = 0; y < 20; ++y)
 		{
@@ -168,10 +180,14 @@ public:
 			{
 				glm::vec3 pos(x * 0.11f, y * 0.11f , 0.0f );
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				Hazel::Renderer::Submit(m_BlueShader, m_BlueVertexArray , transform);
+				if (x % 2 == 0) 
+					m_FlatColorShader->UploadUniformFloat4("u_Color", redColor);
+				else 
+					m_FlatColorShader->UploadUniformFloat4("u_Color", blueColor);
+				Hazel::Renderer::Submit(m_FlatColorShader, m_BlueVertexArray , transform);
 			}
 		}
-		//Hazel::Renderer::Submit(m_Shader, m_VertexArray);
+		Hazel::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Hazel::Renderer::EndScene();
 	}
@@ -190,7 +206,7 @@ private:
 	std::shared_ptr<Hazel::Shader> m_Shader;
 	std::shared_ptr<Hazel::VertexArray> m_VertexArray;
 
-	std::shared_ptr<Hazel::Shader> m_BlueShader;
+	std::shared_ptr<Hazel::Shader> m_FlatColorShader;
 	std::shared_ptr<Hazel::VertexArray> m_BlueVertexArray;
 
 	Hazel::OrthographicCammera m_Camera;
