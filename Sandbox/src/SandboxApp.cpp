@@ -22,8 +22,8 @@ public:
 		};
 
 		// Vertex Buffer
-		std::shared_ptr<Hazel::VertexBuffer> vertexBuffer;
-		std::shared_ptr<Hazel::IndexBuffer>  indexBuffer;
+		Hazel::Ref<Hazel::VertexBuffer> vertexBuffer;
+		Hazel::Ref<Hazel::IndexBuffer>  indexBuffer;
 
 		vertexBuffer.reset(Hazel::VertexBuffer::Create(vertices, sizeof(vertices)));
 
@@ -78,8 +78,8 @@ public:
 
 		////////////////////////////////////////////////////////////////////////////////////////
 
-		std::shared_ptr<Hazel::VertexBuffer> m_BlueVertexBuffer;
-		std::shared_ptr<Hazel::IndexBuffer> m_BlueIndexBuffer;
+		Hazel::Ref<Hazel::VertexBuffer> m_BlueVertexBuffer;
+		Hazel::Ref<Hazel::IndexBuffer> m_BlueIndexBuffer;
 
 		// Vertex Array
 		m_BlueVertexArray.reset(Hazel::VertexArray::Create());
@@ -202,11 +202,11 @@ public:
 	{
 	}
 private:
-	std::shared_ptr<Hazel::Shader> m_Shader;
-	std::shared_ptr<Hazel::VertexArray> m_VertexArray;
+	Hazel::Ref<Hazel::Shader> m_Shader;
+	Hazel::Ref<Hazel::VertexArray> m_VertexArray;
 
-	std::shared_ptr<Hazel::Shader> m_FlatColorShader;
-	std::shared_ptr<Hazel::VertexArray> m_BlueVertexArray;
+	Hazel::Ref<Hazel::Shader> m_FlatColorShader;
+	Hazel::Ref<Hazel::VertexArray> m_BlueVertexArray;
 
 	Hazel::OrthographicCammera m_Camera;
 	glm::vec3 m_CameraPosition;
