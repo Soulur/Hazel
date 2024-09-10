@@ -6,8 +6,9 @@
 #include <algorithm>
 #include <functional>
 
-#include <sstream>
 #include <string>
+#include <sstream>
+#include <array>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>

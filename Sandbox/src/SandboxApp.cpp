@@ -40,41 +40,7 @@ public:
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 		// Shader
-		std::string vertexSrc = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec4 a_Color;
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-
-			out vec3 v_Position;
-			out vec4 v_Color;
-
-			void main()
-			{
-				v_Position = a_Position;
-				v_Color = a_Color;
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_Position;
-			in vec4 v_Color;
-
-			void main()
-			{
-				color = vec4(v_Position * 0.5 + 0.25, 1.0);
-				color = v_Color;
-			}
-		)";
-		m_Shader.reset(Hazel::Shader::Create(vertexSrc, fragmentSrc));
+		m_Shader = m_shaderLibrary.Load("assets/shaders/VertexPosColor.glsl");
 
 		////////////////////////////////////////////////////////////////////////////////////////
 
@@ -107,46 +73,15 @@ public:
 		m_BlueVertexArray->SetIndexBuffer(m_BlueIndexBuffer);
 
 		// Shader
-		std::string flatColorShaderVertexSrc = R"(
-			#version 330 core
+		m_FlatColorShader = m_shaderLibrary.Load("assets/shaders/FlatColor.glsl");
 
-			layout(location = 0) in vec3 a_Position;
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-
-			out vec3 v_Position;
-			void main()
-			{
-				v_Position = a_Position;
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-			}
-		)";
-
-		std::string flatColorShaderFragmentSrc = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_Postion;
-			uniform vec3 u_Color;
-
-			void main()
-			{
-				color = vec4(u_Color , 1.0f);
-			}
-		)";
-		m_FlatColorShader.reset(Hazel::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
-
-
-
-		m_TextureShader.reset(Hazel::Shader::Create("assets/shaders/Texture.glsl"));
+		auto textureShader = m_shaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_ChernLogoTexture = Hazel::Texture2D::Create("assets/textures/ChernoLogo.png");
 
-		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast<Hazel::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<Hazel::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 	}
 	
 	void OnUpdate(Hazel::Timestep ts) override
@@ -188,10 +123,13 @@ public:
 				Hazel::Renderer::Submit(m_FlatColorShader, m_BlueVertexArray , transform);
 			}
 		}
+
+		auto textureShader = m_shaderLibrary.Get("Texture");
+
 		m_Texture->Bind();
-		Hazel::Renderer::Submit(m_TextureShader, m_BlueVertexArray , glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Hazel::Renderer::Submit(textureShader, m_BlueVertexArray , glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		m_ChernLogoTexture->Bind();
-		Hazel::Renderer::Submit(m_TextureShader, m_BlueVertexArray , glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Hazel::Renderer::Submit(textureShader, m_BlueVertexArray , glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		
 		// Triangle
 		// Hazel::Renderer::Submit(m_Shader, m_VertexArray);
@@ -212,10 +150,11 @@ public:
 	{
 	}
 private:
+	Hazel::ShaderLibrary m_shaderLibrary;
 	Hazel::Ref<Hazel::Shader> m_Shader;
 	Hazel::Ref<Hazel::VertexArray> m_VertexArray;
 
-	Hazel::Ref<Hazel::Shader> m_FlatColorShader , m_TextureShader;
+	Hazel::Ref<Hazel::Shader> m_FlatColorShader;
 	Hazel::Ref<Hazel::VertexArray> m_BlueVertexArray;
 
 	Hazel::Ref<Hazel::Texture2D> m_Texture , m_ChernLogoTexture;
