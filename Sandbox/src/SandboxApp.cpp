@@ -1,10 +1,15 @@
 #include <Hazel.h>
+// ---Entry Point---------------------
+#include <Hazel/Core/EntryPoint.h>
+// -----------------------------------
 
 #include "Platform/OpenGL/OpenGLShader.h"
 #include "imgui/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include "Sandbox2D.h"
 
 class ExampleLayer : public Hazel::Layer
 {
@@ -13,7 +18,7 @@ public:
 		: Layer("Example") , m_CameraController( 1280.0f / 720.0f )
 	{
 		// Vertex Array
-		m_VertexArray.reset(Hazel::VertexArray::Create());
+		m_VertexArray = Hazel::VertexArray::Create();
 
 		float vertices[3 * 7] = {
 			-0.5f , -0.5f , 0.0f, 1.0f , 0.0f , 1.0f , 1.0f,
@@ -44,37 +49,6 @@ public:
 
 		////////////////////////////////////////////////////////////////////////////////////////
 
-		Hazel::Ref<Hazel::VertexBuffer> m_BlueVertexBuffer;
-		Hazel::Ref<Hazel::IndexBuffer> m_BlueIndexBuffer;
-
-		// Vertex Array
-		m_BlueVertexArray.reset(Hazel::VertexArray::Create());
-
-		float m_Bluevertices[5 * 4] = {
-			-0.5f , -0.5f , 0.0f , 0.0f , 0.0f ,
-			 0.5f , -0.5f , 0.0f , 1.0f , 0.0f ,
-			 0.5f ,  0.5f , 0.0f , 1.0f , 1.0f ,
-			-0.5f ,  0.5f , 0.0f , 0.0f , 1.0f 
-		};
-
-		// Vertex Buffer
-		m_BlueVertexBuffer.reset(Hazel::VertexBuffer::Create(m_Bluevertices, sizeof(m_Bluevertices)));
-
-		Hazel::BufferLayout m_Bluelayout = {
-			{ Hazel::ShaderDataType::Float3 , "a_Position" },
-			{ Hazel::ShaderDataType::Float2 , "a_TexCoord" }
-		};
-		m_BlueVertexBuffer->SetLayout(m_Bluelayout);
-		m_BlueVertexArray->AddVertexBuffer(m_BlueVertexBuffer);
-
-		// Index Buffer
-		uint32_t m_Blueindices[6] = { 0 , 1 , 2 , 2 , 3 , 0 };
-		m_BlueIndexBuffer.reset(Hazel::IndexBuffer::Create(m_Blueindices, sizeof(m_Blueindices) / sizeof(uint32_t)));
-		m_BlueVertexArray->SetIndexBuffer(m_BlueIndexBuffer);
-
-		// Shader
-		m_FlatColorShader = m_shaderLibrary.Load("assets/shaders/FlatColor.glsl");
-
 		auto textureShader = m_shaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
@@ -89,6 +63,7 @@ public:
 		// Update
 		m_CameraController.OnUpdate(ts);
 
+		// Renderer
 		Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Hazel::RenderCommand::Clear();
 
@@ -153,12 +128,12 @@ class Sandbox : public Hazel::Application
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 
 	~Sandbox()
 	{
-
 	}
 
 };
