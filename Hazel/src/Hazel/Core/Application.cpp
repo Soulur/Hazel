@@ -1,13 +1,13 @@
 #include "hzpch.h"
 #include "Application.h"
 
-#include "Hazel/Log.h"
+#include "Hazel/Core/Log.h"
 
-#include "Renderer/Renderer.h"
+#include "Hazel/Renderer/Renderer.h"
 
 #include "Input.h"
 
-#include <GLFW/glfw3.h>
+#include <glfw/glfw3.h>
 
 namespace Hazel {
 
