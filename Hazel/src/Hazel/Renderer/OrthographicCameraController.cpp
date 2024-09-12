@@ -15,7 +15,7 @@ namespace Hazel {
 
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
-		if (Input::IsKeyPressed(HZ_KEY_W))
+		if (Input::IsKeyPressed(HZ_KEY_W)) 
 			m_CameraPosition.y += m_CameraTranslationSpeed * ts;
 		else if (Input::IsKeyPressed(HZ_KEY_S))
 			m_CameraPosition.y -= m_CameraTranslationSpeed * ts;

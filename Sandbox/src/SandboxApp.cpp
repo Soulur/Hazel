@@ -15,7 +15,7 @@ class ExampleLayer : public Hazel::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example") , m_CameraController( 1280.0f / 720.0f )
+		: Layer("Example") , m_CameraController(1280.0f / 720.0f)
 	{
 		// Vertex Array
 		m_VertexArray = Hazel::VertexArray::Create();
@@ -51,8 +51,8 @@ public:
 
 		auto textureShader = m_shaderLibrary.Load("assets/shaders/Texture.glsl");
 
-		m_Texture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
-		m_ChernLogoTexture = Hazel::Texture2D::Create("assets/textures/ChernoLogo.png");
+		// m_Texture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
+		// m_ChernLogoTexture = Hazel::Texture2D::Create("assets/textures/ChernoLogo.png");
 
 		std::dynamic_pointer_cast<Hazel::OpenGLShader>(textureShader)->Bind();
 		std::dynamic_pointer_cast<Hazel::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
@@ -69,30 +69,30 @@ public:
 
 		Hazel::Renderer::BeginScene(m_CameraController.GetCamera());
 
-		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-		
-		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_FlatColorShader)->Bind();
-		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat3 ("u_Color" , m_SqueraColor );
-		
-		for (int y = 0; y < 20; ++y)
-		{
-			for (int x = 0; x < 20; ++x)
-			{
-				glm::vec3 pos(x * 0.11f, y * 0.11f , 0.0f );
-				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				Hazel::Renderer::Submit(m_FlatColorShader, m_BlueVertexArray , transform);
-			}
-		}
+		//glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+		//
+		//std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_FlatColorShader)->Bind();
+		//std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat3 ("u_Color" , m_SqueraColor );
+		//
+		//for (int y = 0; y < 20; ++y)
+		//{
+		//	for (int x = 0; x < 20; ++x)
+		//	{
+		//		glm::vec3 pos(x * 0.11f, y * 0.11f , 0.0f );
+		//		glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+		//		Hazel::Renderer::Submit(m_FlatColorShader, m_BlueVertexArray , transform);
+		//	}
+		//}
 
-		auto textureShader = m_shaderLibrary.Get("Texture");
+		//auto textureShader = m_shaderLibrary.Get("Texture");
 
-		m_Texture->Bind();
-		Hazel::Renderer::Submit(textureShader, m_BlueVertexArray , glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
-		m_ChernLogoTexture->Bind();
-		Hazel::Renderer::Submit(textureShader, m_BlueVertexArray , glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		//m_Texture->Bind();
+		//Hazel::Renderer::Submit(textureShader, m_BlueVertexArray , glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		//m_ChernLogoTexture->Bind();
+		//Hazel::Renderer::Submit(textureShader, m_BlueVertexArray , glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		
 		// Triangle
-		// Hazel::Renderer::Submit(m_Shader, m_VertexArray);
+		 Hazel::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Hazel::Renderer::EndScene();
 	}

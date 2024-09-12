@@ -16,8 +16,8 @@ namespace Hazel {
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
 
-		OrthographicCammera& GetCamera() { return m_Camera; }
-		const OrthographicCammera GetCamera() const { return m_Camera; }
+		OrthographicCamera& GetCamera() { return m_Camera; }
+		const OrthographicCamera GetCamera() const { return m_Camera; }
 
 		float GetZoomlevel() const { return m_ZoomLevel; }
 		void SetZoomlevel(float level) { m_ZoomLevel = level; }
@@ -27,7 +27,7 @@ namespace Hazel {
 	private:
 		float m_AspectRatio;
 		float m_ZoomLevel = 1.0f;
-		OrthographicCammera m_Camera;
+		OrthographicCamera m_Camera;
 
 		bool m_Rotation;
 
