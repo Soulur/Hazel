@@ -15,7 +15,7 @@ class ExampleLayer : public Hazel::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example") , m_CameraController(1280.0f / 720.0f)
+		: Layer("Example") , m_CameraController(1920.0f/ 1080.0f)
 	{
 		// Vertex Array
 		m_VertexArray = Hazel::VertexArray::Create();
