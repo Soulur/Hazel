@@ -1,5 +1,5 @@
 workspace "Hazel"
-	architecture "x64"
+	architecture "x86_64"
 	startproject "Sandbox"
 
 	configurations
@@ -8,7 +8,11 @@ workspace "Hazel"
 		"Release",
 		"Dist"
 	}
-
+		
+	flags
+	{
+		"MultiProcessorCompile"
+	}
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution directory)

@@ -4,16 +4,16 @@
 
 #ifdef HZ_PLATFORM_WINDOWS
 #if HZ_DYNAMIC_LINK
-	#ifdef HZ_BUILD_DLL
-		#define HAZEL_API __declspec(dllexport)
-	#else
-		#define HAZEL_API __declspec(dllimport)
-	#endif // HZ_BUILD_DLLs
+#ifdef HZ_BUILD_DLL
+#define HAZEL_API __declspec(dllexport)
 #else
-	#define HAZEL_API
+#define HAZEL_API __declspec(dllimport)
+#endif // HZ_BUILD_DLLs
+#else
+#define HAZEL_API
 #endif
 #else
-	#error Hazel only support Window!
+#error Hazel only support Window!
 #endif // HZ_PLATFORM_WINDOWS
 
 #ifndef HZ_DEBUG
@@ -36,7 +36,18 @@ namespace Hazel {
 
 	template<typename T>
 	using Scope = std::unique_ptr<T>;
+	template<typename T, typename ... Args>
+	constexpr Scope<T> CreateScope(Args&& ... args)
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
 
 	template<typename T>
 	using Ref = std::shared_ptr<T>;
+	template<typename T, typename ... Args>
+	constexpr Ref<T> CreateRef(Args&& ... args)
+	{
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
+
 }
