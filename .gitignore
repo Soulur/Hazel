@@ -6,4 +6,6 @@ bin-int/
 
 # Files
 *.user
+*.josn
 Sandbox/imgui.ini
+
