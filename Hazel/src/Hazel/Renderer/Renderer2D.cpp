@@ -129,7 +129,7 @@ namespace Hazel {
 	{
 		HZ_PROFILE_FUNCTION();
 
-		uint32_t dataSize = (uint8_t*)s_Data.QuadVertexBuffePtr - (uint8_t*)s_Data.QuadVertexBuffeBase;
+		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBuffePtr - (uint8_t*)s_Data.QuadVertexBuffeBase);
 		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBuffeBase , dataSize);
 
 		Flush();
