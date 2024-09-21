@@ -94,7 +94,7 @@ namespace Hazel {
 		while (pos != std::string::npos)
 		{
 			size_t eol = source.find_first_of("\r\n", pos); //End of shader type declaration line
-			HZ_CORE_ASSERT(elo != std::string:npos, "Syntax error");
+			HZ_CORE_ASSERT(eol != std::string::npos, "Syntax error");
 
 			size_t begin = pos + typeTokenLength + 1; //Start of shader type name (after "#type " keyword)
 			std::string type = source.substr(begin, eol - begin);
