@@ -173,36 +173,20 @@ namespace Hazel {
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x , size.y , 1.0f });
 
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[0];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 0.0f , 0.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
+		constexpr size_t quadVertexCount = 4;
+		constexpr glm::vec2 textureCoords[] = { {0.0f , 0.0f} , {1.0f , 0.0f} , {1.0f , 1.0f} , {0.0f , 1.0f} };
 
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[1];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 1.0f , 0.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
-
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[2];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 1.0f , 1.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
-
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[3];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 0.0f , 1.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
+		for (size_t i = 0; i < quadVertexCount; ++i)
+		{
+			s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[i];
+			s_Data.QuadVertexBuffePtr->Color = color;
+			s_Data.QuadVertexBuffePtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
+			s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBuffePtr++;
+		}
 
 		s_Data.QuadIndexCount += 6;
-
 		s_Data.Stats.QuadCount++;
 	}
 
@@ -241,36 +225,20 @@ namespace Hazel {
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x , size.y , 1.0f });
 
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[0];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 0.0f , 0.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
+		constexpr size_t quadVertexCount = 4;
+		constexpr glm::vec2 textureCoords[] = { {0.0f , 0.0f} , {1.0f , 0.0f} , {1.0f , 1.0f} , {0.0f , 1.0f} };
 
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[1];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 1.0f , 0.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
-
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[2];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 1.0f , 1.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
-
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[3];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 0.0f , 1.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
+		for (size_t i = 0; i < quadVertexCount; ++i)
+		{
+			s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[i];
+			s_Data.QuadVertexBuffePtr->Color = color;
+			s_Data.QuadVertexBuffePtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
+			s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBuffePtr++;
+		}
 
 		s_Data.QuadIndexCount += 6;
-
 		s_Data.Stats.QuadCount++;
 	}
 
@@ -295,36 +263,20 @@ namespace Hazel {
 			* glm::rotate(glm::mat4(1.0f), rotation, { 0.0f , 0.0f , 1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x , size.y , 1.0f });
 
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[0];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 0.0f , 0.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
+		constexpr size_t quadVertexCount = 4;
+		constexpr glm::vec2 textureCoords[] = { {0.0f , 0.0f} , {1.0f , 0.0f} , {1.0f , 1.0f} , {0.0f , 1.0f} };
 
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[1];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 1.0f , 0.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
-
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[2];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 1.0f , 1.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
-
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[3];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 0.0f , 1.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
+		for (size_t i = 0; i < quadVertexCount; ++i)
+		{
+			s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[i];
+			s_Data.QuadVertexBuffePtr->Color = color;
+			s_Data.QuadVertexBuffePtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
+			s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBuffePtr++;
+		}
 
 		s_Data.QuadIndexCount += 6;
-
 		s_Data.Stats.QuadCount++;
 	}
 
@@ -364,36 +316,20 @@ namespace Hazel {
 			* glm::rotate(glm::mat4(1.0f), rotation, { 0.0f , 0.0f , 1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x , size.y , 1.0f });
 
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[0];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 0.0f , 0.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
+		constexpr size_t quadVertexCount = 4;
+		constexpr glm::vec2 textureCoords[] = { {0.0f , 0.0f} , {1.0f , 0.0f} , {1.0f , 1.0f} , {0.0f , 1.0f} };
 
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[1];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 1.0f , 0.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
-
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[2];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 1.0f , 1.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
-
-		s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[3];
-		s_Data.QuadVertexBuffePtr->Color = color;
-		s_Data.QuadVertexBuffePtr->TexCoord = { 0.0f , 1.0f };
-		s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-		s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-		s_Data.QuadVertexBuffePtr++;
+		for (size_t i = 0; i < quadVertexCount; ++i)
+		{
+			s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[i];
+			s_Data.QuadVertexBuffePtr->Color = color;
+			s_Data.QuadVertexBuffePtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
+			s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBuffePtr++;
+		}
 
 		s_Data.QuadIndexCount += 6;
-
 		s_Data.Stats.QuadCount++;
 	}
 
