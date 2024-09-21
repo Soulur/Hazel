@@ -169,6 +169,36 @@ namespace Hazel {
 	};
 }
 
+namespace InstrumentorUtils {
+
+
+	template<size_t N>
+	struct ChangeResult
+	{
+		char Date[N];
+	};
+
+	template<size_t N , size_t K>
+	constexpr auto CleanupOutputString(const char(&expr)[N], const char(&remove)[K])
+	{
+		ChangeResult<N> result = {};
+
+		size_t srcIndex = 0;
+		size_t dstIndex = 0;
+		while (srcIndex < N)
+		{
+			size_t matchIndex = 0;
+			while (matchIndex < K - 1 && srcIndex + matchIndex < N - 1 && expr[srcIndex + matchIndex] == remove[matchIndex])
+				matchIndex++;
+			if (matchIndex == K - 1)
+				srcIndex += matchIndex;
+			result.Date[dstIndex++] = expr[srcIndex] == '"' ? '\'' : expr[srcIndex];
+			srcIndex++;
+		}
+		return result;
+	}
+}
+
 #define HZ_PROFILE 0
 #if HZ_PROFILE
 
@@ -179,7 +209,7 @@ namespace Hazel {
 	#define HZ_FUNC_SIG __PRETTY_FUNCTION__
 	#elif defined(__DMC__) && (__DMC__ >= 0x810)
 	#define HZ_FUNC_SIG __PRETTY_FUNCTION__
-	#elif defined(__FUNCSIG__)
+	#elif (defined(__FUNCSIG__) || (_MSC_VER))
 	#define HZ_FUNC_SIG __FUNCSIG__
 	#elif (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 600)) || (defined(__IBMCPP__) && (__IBMCPP__ >= 500))
 	#define HZ_FUNC_SIG __FUNCTION__
@@ -195,7 +225,8 @@ namespace Hazel {
 
 	#define HZ_PROFILE_BEGIN_SESSION(name, filepath) ::Hazel::Instrumentor::Get().BeginSession(name, filepath)
 	#define HZ_PROFILE_END_SESSION() ::Hazel::Instrumentor::Get().EndSession()
-	#define HZ_PROFILE_SCOPE(name) ::Hazel::InstrumentationTimer timer##__LINE__(name);
+	#define HZ_PROFILE_SCOPE(name) onstexpr auto fixedName = ::Hazel::InstrumentorUtils::CleanupOutputString(name, "__cdecl ");\
+									::Hazel::InstrumentationTimer timer##__LINE__(fixedName.Data)
 	#define HZ_PROFILE_FUNCTION() HZ_PROFILE_SCOPE(HZ_FUNC_SIG)
 #else
 	#define HZ_PROFILE_BEGIN_SESSION(name, filepath)
