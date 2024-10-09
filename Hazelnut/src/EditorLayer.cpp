@@ -8,7 +8,7 @@ namespace Hazel {
 
 
     EditorLayer::EditorLayer()
-        : Layer("Sandbo2D"), m_CameraController(Application::Get().GetWindow().GetWidth() / Application::Get().GetWindow().GetHeight())
+        : Layer("Sandbo2D"), m_CameraController( (float)Application::Get().GetWindow().GetWidth() / (float)Application::Get().GetWindow().GetHeight())
     {
     }
 

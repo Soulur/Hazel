@@ -57,8 +57,8 @@ project "Hazel"
 	{
 		"_CRT_SECURE_NO_WARNINGS",
 		-- warning c4996
-		 "_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING",
-		 "_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
+		"_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING",
+		"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
 		-- >>>>>>>>>>>>>>>>>>>>>>>
 	}
 
@@ -175,6 +175,15 @@ project "Hazelnut"
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
+
+		defines
+	{
+		-- warning c4996
+		"_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING",
+		"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
+		-- >>>>>>>>>>>>>>>>>>>>>>>
+	}
+
 	includedirs
 	{
 		"Hazel/vendor/spdlog/include",
