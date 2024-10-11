@@ -24,7 +24,7 @@ namespace Hazel {
 		Ref<Shader> m_FlatColorShader;
 		Ref<Framebuffer> m_Framebuffer;
 
-		entt::entity m_SquareEntity;
+		Entity m_SquareEntity;
 		Ref<Scene> m_ActiveScene;
 
 		Ref<Texture2D> m_CheckerboardTexture;
