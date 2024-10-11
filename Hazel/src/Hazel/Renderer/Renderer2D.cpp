@@ -31,8 +31,8 @@ namespace Hazel {
 		Ref<Texture2D> WhiteTexture;
 
 		uint32_t QuadIndexCount = 0;
-		QuadVertex* QuadVertexBuffeBase = nullptr;
-		QuadVertex* QuadVertexBuffePtr = nullptr;
+		QuadVertex* QuadVertexBufferBase = nullptr;
+		QuadVertex* QuadVertexBufferPtr = nullptr;
 
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1;	// 0 = white texture
@@ -61,7 +61,7 @@ namespace Hazel {
 		});
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
-		s_Data.QuadVertexBuffeBase = new QuadVertex[s_Data.MaxVertices];
+		s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MaxVertices];
 
 		uint32_t* quadIndices = new uint32_t[s_Data.Maxindices];
 
@@ -111,7 +111,7 @@ namespace Hazel {
 	{
 		HZ_PROFILE_FUNCTION();
 
-		delete[] s_Data.QuadVertexBuffeBase;
+		delete[] s_Data.QuadVertexBufferBase;
 	}
 
 	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
@@ -124,7 +124,7 @@ namespace Hazel {
 		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
 
 		s_Data.QuadIndexCount = 0;
-		s_Data.QuadVertexBuffePtr = s_Data.QuadVertexBuffeBase;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 
 		s_Data.TextureSlotIndex = 1;
 	}
@@ -137,7 +137,7 @@ namespace Hazel {
 		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
 		s_Data.QuadIndexCount = 0;
-		s_Data.QuadVertexBuffePtr = s_Data.QuadVertexBuffeBase;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 
 		s_Data.TextureSlotIndex = 1;
 	}
@@ -146,8 +146,8 @@ namespace Hazel {
 	{
 		HZ_PROFILE_FUNCTION();
 
-		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBuffePtr - (uint8_t*)s_Data.QuadVertexBuffeBase);
-		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBuffeBase , dataSize);
+		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
+		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase , dataSize);
 
 		Flush();
 	}
@@ -170,7 +170,7 @@ namespace Hazel {
 		EndScene();
 
 		s_Data.QuadIndexCount = 0;
-		s_Data.QuadVertexBuffePtr = s_Data.QuadVertexBuffeBase;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 
 		s_Data.TextureSlotIndex = 1;
 	}
@@ -220,12 +220,12 @@ namespace Hazel {
 
 		for (size_t i = 0; i < quadVertexCount; ++i)
 		{
-			s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[i];
-			s_Data.QuadVertexBuffePtr->Color = color;
-			s_Data.QuadVertexBuffePtr->TexCoord = textureCoords[i];
-			s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-			s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-			s_Data.QuadVertexBuffePtr++;
+			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
+			s_Data.QuadVertexBufferPtr->Color = color;
+			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr++;
 		}
 
 		s_Data.QuadIndexCount += 6;
@@ -265,12 +265,12 @@ namespace Hazel {
 
 		for (size_t i = 0; i < quadVertexCount; ++i)
 		{
-			s_Data.QuadVertexBuffePtr->Position = transform * s_Data.QuadVertexPositions[i];
-			s_Data.QuadVertexBuffePtr->Color = tintColor;
-			s_Data.QuadVertexBuffePtr->TexCoord = textureCoords[i];
-			s_Data.QuadVertexBuffePtr->TexIndex = textureIndex;
-			s_Data.QuadVertexBuffePtr->TilingFactor = tilingFactor;
-			s_Data.QuadVertexBuffePtr++;
+			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
+			s_Data.QuadVertexBufferPtr->Color = tintColor;
+			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr++;
 		}
 
 		s_Data.QuadIndexCount += 6;
