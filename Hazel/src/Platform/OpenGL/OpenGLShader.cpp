@@ -58,6 +58,7 @@ namespace Hazel {
 		HZ_PROFILE_FUNCTION();
 
 		std::string result;
+		// ifstream closes itself due to RAII
 		std::ifstream in(filepath, std::ios::in, std::ios::binary);
 		if (in)
 		{

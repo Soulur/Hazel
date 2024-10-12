@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Event.h"
-#include "Hazel/Core/Input.h"
+#include "Hazel/Core/MouseCodes.h"
 
 namespace Hazel {
 
 	class MouseMovedEvent : public Event
 	{
 	public:
-		MouseMovedEvent(float x, float y)
+		MouseMovedEvent(const float x, const float y)
 			: m_MouseX(x), m_MouseY(y) {}
 
 		float GetX() const { return m_MouseX; }
@@ -30,7 +30,7 @@ namespace Hazel {
 	class MouseScrolledEvent : public Event
 	{
 	public:
-		MouseScrolledEvent(float xOffset, float yOffset)
+		MouseScrolledEvent(const float xOffset, const float yOffset)
 			: m_XOffset(xOffset), m_YOffset(yOffset) {}
 
 		float GetXOffset() const { return m_XOffset; }
@@ -52,20 +52,20 @@ namespace Hazel {
 	class MouseButtonEvent : public Event
 	{
 	public:
-		inline Mouse GetMouseButton() const { return m_Button; }
+		MouseCode GetMouseButton() const { return m_Button; }
 
 		EVENT_CLASS_CATEGORY(EventCatgoryMouse | EventCatgoryInput)
 	protected:
-		MouseButtonEvent(Mouse button)
+		MouseButtonEvent(const MouseCode button)
 			: m_Button(button) {}
-		Mouse m_Button;
+		MouseCode m_Button;
 
 	};
 
 	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressedEvent(Mouse button)
+		MouseButtonPressedEvent(const MouseCode button)
 			: MouseButtonEvent(button) {}
 
 		std::string ToString() const override
@@ -81,7 +81,7 @@ namespace Hazel {
 	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonReleasedEvent(Mouse button)
+		MouseButtonReleasedEvent(const MouseCode button)
 			: MouseButtonEvent(button) {}
 
 		std::string ToString() const override

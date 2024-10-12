@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "Hazel/Core/PlatformDetection.h"
+
 // Platform detection using predefined macros
 #ifdef _WIN32
 		/* Windows x64/x86 */
