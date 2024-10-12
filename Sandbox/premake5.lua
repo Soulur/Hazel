@@ -9,8 +9,8 @@ project "Sandbox"
 
 	files
 	{
-		"%src/**.h",
-		"%src/**.cpp"
+		"src/**.h",
+		"src/**.cpp"
 	}
 	
 	defines

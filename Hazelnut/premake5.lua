@@ -23,7 +23,7 @@ project "Hazelnut"
 
 	includedirs
 	{
-        "%{wks.location}/Hazel/vendor/splog/include",
+        "%{wks.location}/Hazel/vendor/spdlog/include",
         "%{wks.location}/Hazel/src",
         "%{wks.location}/Hazel/vendor",
         "%{IncludeDir.glm}",
