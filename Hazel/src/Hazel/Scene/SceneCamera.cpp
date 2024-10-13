@@ -10,21 +10,21 @@ namespace Hazel {
 		RecalculateProjection();
 	}
 
-	void SceneCamera::SetOrthographic(float size, float nearClip, float FarClip)
-	{
-		m_ProjectionType = ProjectionType::Orthographic;
-		m_OrthographicSize = size;
-		m_OrthographicNear = nearClip;
-		m_OrthographicFar = FarClip;
-		RecalculateProjection();
-	}
-
 	void SceneCamera::SetPerspective(float verticalFOV, float nearClip, float FarClip)
 	{
 		m_ProjectionType = ProjectionType::Perspective;
 		m_PerspectiveFOV = verticalFOV;
 		m_PerspectiveNear = nearClip;
 		m_PerspectiveFar = FarClip;
+		RecalculateProjection();
+	}
+
+	void SceneCamera::SetOrthographic(float size, float nearClip, float FarClip)
+	{
+		m_ProjectionType = ProjectionType::Orthographic;
+		m_OrthographicSize = size;
+		m_OrthographicNear = nearClip;
+		m_OrthographicFar = FarClip;
 		RecalculateProjection();
 	}
 

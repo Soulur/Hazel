@@ -15,8 +15,8 @@ namespace Hazel {
 		SceneCamera();
 		virtual ~SceneCamera() = default;
 
-		void SetOrthographic(float size, float nearClip, float FarClip);
 		void SetPerspective(float verticalFOV, float nearClip, float FarClip);
+		void SetOrthographic(float size, float nearClip, float FarClip);
 
 		void SetViewportSize(uint32_t width, uint32_t height);
 
