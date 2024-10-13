@@ -24,11 +24,11 @@ namespace Hazel {
 	enum EventCategory
 	{
 		Node = 0,
-		EventCatgoryApplication		= BIT(0),
-		EventCatgoryInput			= BIT(1),
-		EventCatgoryKeyboard		= BIT(2),
-		EventCatgoryMouse			= BIT(3),
-		EventCatgoryMouseButton		= BIT(4)
+		EventCategoryApplication		= BIT(0),
+		EventCategoryInput				= BIT(1),
+		EventCategoryKeyboard			= BIT(2),
+		EventCategoryMouse				= BIT(3),
+		EventCategoryMouseButton		= BIT(4)
 	};
 
 #define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; } \
