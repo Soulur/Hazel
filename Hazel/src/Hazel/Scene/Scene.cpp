@@ -37,13 +37,13 @@ namespace Hazel {
 				if (!nsc.Instance)
 				{
 					nsc.Instance = nsc.InstantiateScript();
-					nsc.Instance->m_Entity = Entity{ entity , this };
+					nsc.Instance->m_Entity = Entity{ entity, this };
 					nsc.Instance->OnCreate();
 				}
 				nsc.Instance->OnUpdate(ts);
 			});
 		}
-		
+
 
 		Camera* mainCamera = nullptr;
 		glm::mat4* mainTransform = nullptr;

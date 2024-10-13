@@ -1,7 +1,7 @@
 #pragma once
 
 #include "entt.hpp"
-
+#include <string>
 #include "Hazel/Core/Timestep.h"
 
 namespace Hazel {
@@ -23,6 +23,7 @@ namespace Hazel {
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
 		
 		friend class Entity;
+		friend class SceneHierarchyPanel;
 	};
 
 }
