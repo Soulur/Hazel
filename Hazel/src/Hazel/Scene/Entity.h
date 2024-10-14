@@ -51,10 +51,9 @@ namespace Hazel {
 			return m_EntityHandle == other.m_EntityHandle && m_Scene == other.m_Scene;
 		}
 
-		bool operator!=(const Entity& other) const
-		{
-			return !(*this == other);
-		}
+		// operator bool() const { return m_EntityHandle != 0; }
+		operator bool() const { return (uint32_t)m_EntityHandle == 0; }
+
 	private:
 		entt::entity m_EntityHandle{ entt::null };
 		Scene* m_Scene = nullptr;
