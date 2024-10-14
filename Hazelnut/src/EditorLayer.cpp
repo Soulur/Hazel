@@ -38,7 +38,7 @@ namespace Hazel {
 
         m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");        
         auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
-        cc.Primary = false;
+        cc.Primary = false; 
 
         class CameraController : public ScriptableEntity
         {
@@ -53,17 +53,17 @@ namespace Hazel {
 
             virtual void OnUpdate(Timestep ts) override
             {
-                auto& transform = GetComponent<TransformComponent>().Transform;
+                auto& transform = GetComponent<TransformComponent>().Translation;
                 float speed = 5.0f;
                 
                 if (Input::IsKeyPressed(Key::A))
-                    transform[3][0] -= speed * ts;
+                    transform.x -= speed * ts;
                 if (Input::IsKeyPressed(Key::D))
-                    transform[3][0] += speed * ts;
+                    transform.x += speed * ts;
                 if (Input::IsKeyPressed(Key::S))
-                    transform[3][1] -= speed * ts;
+                    transform.y -= speed * ts;
                 if (Input::IsKeyPressed(Key::W))
-                    transform[3][1] += speed * ts;
+                    transform.y += speed * ts;
             }
         };
 
