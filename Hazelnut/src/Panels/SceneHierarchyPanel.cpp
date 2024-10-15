@@ -242,6 +242,7 @@ namespace Hazel {
 			{
 				if (!m_SelectionContext.HasComponent<TransformComponent>())
 					m_SelectionContext.AddComponent<TransformComponent>();
+				else HZ_CORE_WARN("This entity already has the Transform Component!");
 				ImGui::CloseCurrentPopup();
 			}
 
@@ -249,6 +250,7 @@ namespace Hazel {
 			{
 				if (!m_SelectionContext.HasComponent<CameraComponent>())
 					m_SelectionContext.AddComponent<CameraComponent>();
+				else HZ_CORE_WARN("This entity already has the Camera Component!");
 				ImGui::CloseCurrentPopup();
 			}
 
@@ -256,6 +258,7 @@ namespace Hazel {
 			{
 				if (!m_SelectionContext.HasComponent<SpriteRendererComponent>())
 					m_SelectionContext.AddComponent<SpriteRendererComponent>();
+				else HZ_CORE_WARN("This entity already has the Sprite Renderer Component!");
 				ImGui::CloseCurrentPopup();
 			}
 
