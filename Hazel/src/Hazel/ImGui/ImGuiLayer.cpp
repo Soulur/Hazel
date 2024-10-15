@@ -105,7 +105,7 @@ namespace Hazel {
 			glfwMakeContextCurrent(backup_current_context);
 		}
 	}
-
+	 
 	void ImGuiLayer::SetDarkThemeColors()
 	{
 		// Green
