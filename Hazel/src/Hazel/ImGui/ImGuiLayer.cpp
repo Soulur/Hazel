@@ -108,12 +108,15 @@ namespace Hazel {
 
 	void ImGuiLayer::SetDarkThemeColors()
 	{
+		// Green
+		auto greenColor = ImVec4{ (float)0 / 255, (float)204 / 255, (float)61 / 255 , 0.5f };
+
 		auto& colors = ImGui::GetStyle().Colors;
 		colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
 		// Headers
-		colors[ImGuiCol_Header] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
-		colors[ImGuiCol_HeaderHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
-		colors[ImGuiCol_HeaderActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+		colors[ImGuiCol_Header] = greenColor;
+		colors[ImGuiCol_HeaderHovered] = greenColor;
+		colors[ImGuiCol_HeaderActive] = greenColor;
 
 		// Buttons
 		colors[ImGuiCol_Button] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
