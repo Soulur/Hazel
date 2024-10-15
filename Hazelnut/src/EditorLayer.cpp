@@ -278,23 +278,23 @@ namespace Hazel {
 
     void EditorLayer::OpenScene()
     {
-        std::string filepath = FileDialogs::OpenFile("Hazel Scene (*.hazel)\0*.hazel\0");
-        if (!filepath.empty())
+        std::optional<std::string> filepath = FileDialogs::OpenFile("Hazel Scene (*.hazel)\0*.hazel\0");
+        if (filepath)
         {
             NewScene();
 
             SceneSerializer serializer(m_ActiveScene);
-            serializer.Deserialize(filepath);
+            serializer.Deserialize(*filepath);
         }
     }
 
     void EditorLayer::SaveSceneAS()
     {
-        std::string filepath = FileDialogs::SaveFile("Hazel Scene (*.hazel)\0*.hazel\0");
-        if (!filepath.empty())
+        std::optional<std::string> filepath = FileDialogs::SaveFile("Hazel Scene (*.hazel)\0*.hazel\0");
+        if (filepath)
         {
             SceneSerializer serializer(m_ActiveScene);
-            serializer.Serialize(filepath);
+            serializer.Serialize(*filepath);
         }
     }
 
