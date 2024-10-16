@@ -1,7 +1,6 @@
 #include "hzpch.h"
 #include "Hazel/Utils/PlatformUtils.h"
 
-#include <sstream>
 #include <commdlg.h>
 #include <GLFW/glfw3.h>
 #define GLFW_EXPOSE_NATIVE_WIN32
@@ -26,6 +25,7 @@ namespace Hazel {
 		ofn.lpstrFilter = filer;
 		ofn.nFilterIndex = 1;
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+		
 		if (GetOpenFileNameA(&ofn) == TRUE)
 			return ofn.lpstrFile;
 		
