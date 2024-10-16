@@ -23,7 +23,7 @@ namespace Hazel {
 
 		std::string source = ReadFile(filepath);
 		auto shaderSoures = PreProcess(source);
-		Complie(shaderSoures);
+		Compile(shaderSoures);
 
 		// Extract name from filepath
 		auto lastSlash = filepath.find_last_of("/\\");
@@ -43,7 +43,7 @@ namespace Hazel {
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
-		Complie(sources);
+		Compile(sources);
 	}
 
 	OpenGLShader::~OpenGLShader()
@@ -110,7 +110,7 @@ namespace Hazel {
 		return shaderSources;
 	}
 
-	void OpenGLShader::Complie(const std::unordered_map<GLenum, std::string>& shaderSource)
+	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSource)
 	{
 		HZ_PROFILE_FUNCTION();
 
