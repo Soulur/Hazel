@@ -45,6 +45,7 @@ namespace Hazel {
 
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+		glm::vec2 m_ViewprotBounds[2];
 
 		glm::vec4 m_SqueraColor = { 0.2f, 0.3f, 0.8f , 1.0f };
 
