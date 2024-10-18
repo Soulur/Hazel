@@ -92,7 +92,7 @@ namespace Hazel {
 		{
 			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-			Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+			Renderer2D::DrawQuadSprite(transform.GetTransform(), sprite, (int)entity);
 		}
 
 		Renderer2D::EndScene();
