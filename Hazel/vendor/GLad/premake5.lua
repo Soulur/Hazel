@@ -1,16 +1,16 @@
-project "GLad"
+project "Glad"
     kind "StaticLib"
     language "C"
-    staticruntime "on"
+    staticruntime "off"
     
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files
     {
         "include/glad/glad.h",
         "include/KHR/khrplatform.h",
-        "src/glad.c",
+        "src/glad.c"
     }
 
     includedirs
@@ -25,6 +25,6 @@ project "GLad"
         runtime "Debug"
         symbols "on"
 
-	filter "configurations:Release"
+    filter "configurations:Release"
         runtime "Release"
         optimize "on"
