@@ -5,16 +5,15 @@
 #include "Hazel/Core/KeyCodes.h"
 #include "Hazel/Core/MouseCodes.h"
 
-#include <GLFW/glfw3.h>
+#include <glfw/glfw3.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
 namespace Hazel {
 
-	EditorCamera::EditorCamera(float fov, float aspectRation, float nearClip, float farClip)
-		: m_FOV(fov) , m_AspectRatio(aspectRation), m_NearClip(nearClip), m_FarClip(farClip),
-		Camera(glm::perspective(glm::radians(fov), aspectRation, nearClip, farClip))
+	EditorCamera::EditorCamera(float fov, float aspectRatio, float nearClip, float farClip)
+		: m_FOV(fov), m_AspectRatio(aspectRatio), m_NearClip(nearClip), m_FarClip(farClip), Camera(glm::perspective(glm::radians(fov), aspectRatio, nearClip, farClip))
 	{
 		UpdateView();
 	}
@@ -27,7 +26,7 @@ namespace Hazel {
 
 	void EditorCamera::UpdateView()
 	{
-		// m+_Yaw = m_Pitch = 0.0f; // Lock the camera`s rotation
+		// m_Yaw = m_Pitch = 0.0f; // Lock the camera's rotation
 		m_Position = CalculatePosition();
 
 		glm::quat orientation = GetOrientation();
@@ -117,7 +116,7 @@ namespace Hazel {
 		}
 
 	}
-	
+
 	glm::vec3 EditorCamera::GetUpDirection() const
 	{
 		return glm::rotate(GetOrientation(), glm::vec3(0.0f, 1.0f, 0.0f));

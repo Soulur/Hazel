@@ -1,5 +1,5 @@
 #include "hzpch.h"
-#include "WindowsWindow.h"
+#include "Platform/Windows/WindowsWindow.h"
 
 #include "Hazel/Core/Input.h"
 
@@ -12,12 +12,12 @@
 #include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Hazel {
+	
+	static uint8_t s_GLFWWindowCount = 0;
 
-	static uint32_t s_GLFWInitialized = 0;
-
-	static void GLFWErrorCallback(int error,  const char* description)
+	static void GLFWErrorCallback(int error, const char* description)
 	{
-		HZ_CORE_ERROR("GLFW_Error ({0}: {1}", error, description);
+		HZ_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
@@ -41,11 +41,10 @@ namespace Hazel {
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
-		//m_Data.API = props.API;
 
 		HZ_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
-		if (s_GLFWInitialized == 0)
+		if (s_GLFWWindowCount == 0)
 		{
 			HZ_PROFILE_SCOPE("glfwInit");
 			int success = glfwInit();
@@ -55,15 +54,15 @@ namespace Hazel {
 
 		{
 			HZ_PROFILE_SCOPE("glfwCreateWindow");
-#if defined(HZ_DEBUG)
+		#if defined(HZ_DEBUG)
 			if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
 				glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-#endif
+		#endif
 			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-			++s_GLFWInitialized;
+			++s_GLFWWindowCount;
 		}
 
-		m_Context = CreateScope<OpenGLContext>(m_Window);
+		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
@@ -80,14 +79,14 @@ namespace Hazel {
 			data.EventCallback(event);
 		});
 
-		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window) 
+		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 			WindowCloseEvent event;
 			data.EventCallback(event);
 		});
 
-		glfwSetKeyCallback(m_Window, [](GLFWwindow* window , int key , int scancode , int action , int mods)
+		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
@@ -96,21 +95,18 @@ namespace Hazel {
 				case GLFW_PRESS:
 				{
 					KeyPressedEvent event(key, 0);
-
 					data.EventCallback(event);
 					break;
 				}
 				case GLFW_RELEASE:
 				{
 					KeyReleasedEvent event(key);
-
 					data.EventCallback(event);
 					break;
 				}
 				case GLFW_REPEAT:
 				{
 					KeyPressedEvent event(key, 1);
-
 					data.EventCallback(event);
 					break;
 				}
@@ -121,11 +117,11 @@ namespace Hazel {
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-			KeyTypedEvent event(static_cast<KeyCode>(keycode));
+			KeyTypedEvent event(keycode);
 			data.EventCallback(event);
 		});
 
-		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window , int button, int action, int mods)
+		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
@@ -134,14 +130,12 @@ namespace Hazel {
 				case GLFW_PRESS:
 				{
 					MouseButtonPressedEvent event(button);
-
 					data.EventCallback(event);
 					break;
 				}
 				case GLFW_RELEASE:
 				{
 					MouseButtonReleasedEvent event(button);
-
 					data.EventCallback(event);
 					break;
 				}
@@ -153,7 +147,7 @@ namespace Hazel {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
 			MouseScrolledEvent event((float)xOffset, (float)yOffset);
-			data.EventCallback(event);		
+			data.EventCallback(event);
 		});
 
 		glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
@@ -170,10 +164,10 @@ namespace Hazel {
 		HZ_PROFILE_FUNCTION();
 
 		glfwDestroyWindow(m_Window);
+		--s_GLFWWindowCount;
 
-		if (--s_GLFWInitialized == 0)
+		if (s_GLFWWindowCount == 0)
 		{
-			HZ_CORE_INFO("Terminating GLFW");
 			glfwTerminate();
 		}
 	}
@@ -197,9 +191,10 @@ namespace Hazel {
 
 		m_Data.VSync = enabled;
 	}
-	
-	bool WindowsWindow::IsVsync() const 
+
+	bool WindowsWindow::IsVSync() const
 	{
 		return m_Data.VSync;
 	}
+
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Event.h"
+#include "Hazel/Events/Event.h"
 #include "Hazel/Core/MouseCodes.h"
 
 namespace Hazel {
@@ -58,8 +58,8 @@ namespace Hazel {
 	protected:
 		MouseButtonEvent(const MouseCode button)
 			: m_Button(button) {}
-		MouseCode m_Button;
 
+		MouseCode m_Button;
 	};
 
 	class MouseButtonPressedEvent : public MouseButtonEvent
@@ -93,5 +93,5 @@ namespace Hazel {
 
 		EVENT_CLASS_TYPE(MouseButtonReleased)
 	};
-	
+
 }

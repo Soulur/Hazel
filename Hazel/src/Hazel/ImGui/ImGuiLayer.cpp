@@ -1,15 +1,15 @@
 #include "hzpch.h"
-#include "ImGuiLayer.h"
+#include "Hazel/ImGui/ImGuiLayer.h"
 
-#include "imgui.h"
-#include "examples/imgui_impl_glfw.h"
-#include "examples/imgui_impl_opengl3.h"
+#include <imgui.h>
+#include <examples/imgui_impl_glfw.h>
+#include <examples/imgui_impl_opengl3.h>
 
 #include "Hazel/Core/Application.h"
 
 // TEMPORARY
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 #include "ImGuizmo.h"
 
@@ -19,7 +19,7 @@ namespace Hazel {
 		: Layer("ImGuiLayer")
 	{
 	}
-	
+
 	void ImGuiLayer::OnAttach()
 	{
 		HZ_PROFILE_FUNCTION();
@@ -49,6 +49,13 @@ namespace Hazel {
 		//ImGui::StyleColorsClassic();
 
 		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+		ImGuiStyle& style = ImGui::GetStyle();
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			style.WindowRounding = 0.0f;
+			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+		}
+
 		SetDarkThemeColors();
 
 		Application& app = Application::Get();
@@ -77,7 +84,7 @@ namespace Hazel {
 			e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
 		}
 	}
-
+	
 	void ImGuiLayer::Begin()
 	{
 		HZ_PROFILE_FUNCTION();
@@ -108,7 +115,7 @@ namespace Hazel {
 			glfwMakeContextCurrent(backup_current_context);
 		}
 	}
-	 
+
 	void ImGuiLayer::SetDarkThemeColors()
 	{
 		// Green
@@ -120,21 +127,24 @@ namespace Hazel {
 		colors[ImGuiCol_Header] = greenColor;
 		colors[ImGuiCol_HeaderHovered] = greenColor;
 		colors[ImGuiCol_HeaderActive] = greenColor;
-
+		
 		// Buttons
 		colors[ImGuiCol_Button] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
 		colors[ImGuiCol_ButtonHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
 		colors[ImGuiCol_ButtonActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+
 		// Frame BG
 		colors[ImGuiCol_FrameBg] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
 		colors[ImGuiCol_FrameBgHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
 		colors[ImGuiCol_FrameBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+
 		// Tabs
 		colors[ImGuiCol_Tab] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TabHovered] = ImVec4{ 0.38f, 0.3805f, 0.381f, 1.0f };
 		colors[ImGuiCol_TabActive] = ImVec4{ 0.28f, 0.2805f, 0.281f, 1.0f };
 		colors[ImGuiCol_TabUnfocused] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
+
 		// Title
 		colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };

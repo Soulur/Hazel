@@ -14,8 +14,8 @@ namespace Hazel {
 		uint32_t Height;
 
 		WindowProps(const std::string& title = "Hazel Engine",
-			uint32_t width  = 1600,
-			uint32_t height = 900)
+			        uint32_t width  = 1600,
+			        uint32_t height = 900)
 			: Title(title), Width(width), Height(height)
 		{
 		}
@@ -27,7 +27,7 @@ namespace Hazel {
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
 
-		virtual ~Window() {}
+		virtual ~Window() = default;
 
 		virtual void OnUpdate() = 0;
 
@@ -36,13 +36,12 @@ namespace Hazel {
 
 		// Window attributes
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
-		virtual void SetVSync(bool enaled) = 0;
-		virtual bool IsVsync() const = 0;
+		virtual void SetVSync(bool enabled) = 0;
+		virtual bool IsVSync() const = 0;
 
 		virtual void* GetNativeWindow() const = 0;
 
-		static Scope<Window> Window::Create(const WindowProps& props = WindowProps());
+		static Scope<Window> Create(const WindowProps& props = WindowProps());
 	};
 
-	
 }

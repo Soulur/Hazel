@@ -20,17 +20,17 @@ namespace Hazel {
 		virtual void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
 	private:
-		bool OnKeyPressed(KeyPressedEvent& e );
-		bool OnMouseButtonPressed(MouseButtonPressedEvent& e );
+		bool OnKeyPressed(KeyPressedEvent& e);
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 
 		void NewScene();
 		void OpenScene();
-		void SaveSceneAS();
+		void SaveSceneAs();
 	private:
-		OrthographicCameraController m_CameraController;
+		Hazel::OrthographicCameraController m_CameraController;
 
 		// Temp
-		Ref<VertexArray> m_BlueVertexArray;
+		Ref<VertexArray> m_SquareVA;
 		Ref<Shader> m_FlatColorShader;
 		Ref<Framebuffer> m_Framebuffer;
 
@@ -38,7 +38,7 @@ namespace Hazel {
 		Entity m_SquareEntity;
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
-
+		
 		Entity m_HoveredEntity;
 
 		bool m_PrimaryCamera = true;
@@ -51,7 +51,7 @@ namespace Hazel {
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		glm::vec2 m_ViewportBounds[2];
 
-		glm::vec4 m_SqueraColor = { 0.2f, 0.3f, 0.8f , 1.0f };
+		glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 
 		int m_GizmoType = -1;
 

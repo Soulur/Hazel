@@ -1,12 +1,9 @@
 #include <Hazel.h>
-// ---Entry Point---------------------
 #include <Hazel/Core/EntryPoint.h>
-// -----------------------------------
 
 #include "EditorLayer.h"
 
 namespace Hazel {
-
 
 	class Hazelnut : public Application
 	{
@@ -20,12 +17,11 @@ namespace Hazel {
 		~Hazelnut()
 		{
 		}
-
 	};
 
-
-	Application* CreatApplication()
+	Application* CreateApplication()
 	{
 		return new Hazelnut();
 	}
-} 
+
+}

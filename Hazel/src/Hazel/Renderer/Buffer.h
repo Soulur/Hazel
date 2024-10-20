@@ -2,9 +2,9 @@
 
 namespace Hazel {
 
-	enum class ShaderDataType : uint8_t
+	enum class ShaderDataType
 	{
-		Node = 0 , Float , Float2 , Float3 , Float4 ,Mat3 , Mat4 , Int , Int2 , Int3 , Int4 , Bool
+		None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
 	};
 
 	static uint32_t ShaderDataTypeSize(ShaderDataType type)
@@ -37,9 +37,9 @@ namespace Hazel {
 		bool Normalized;
 
 		BufferElement() = default;
-		
-		BufferElement(ShaderDataType type , const std::string& name , bool normalized = false)
-			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0) , Normalized(normalized)
+
+		BufferElement(ShaderDataType type, const std::string& name, bool normalized = false)
+			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized)
 		{
 		}
 
@@ -69,8 +69,8 @@ namespace Hazel {
 	public:
 		BufferLayout() {}
 
-		BufferLayout(std::initializer_list<BufferElement> elements) 
-			: m_Elements(elements) 
+		BufferLayout(std::initializer_list<BufferElement> elements)
+			: m_Elements(elements)
 		{
 			CalculateOffsetsAndStride();
 		}
@@ -83,7 +83,7 @@ namespace Hazel {
 		std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
 		std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
 	private:
-		void CalculateOffsetsAndStride() 
+		void CalculateOffsetsAndStride()
 		{
 			size_t offset = 0;
 			m_Stride = 0;
@@ -105,27 +105,29 @@ namespace Hazel {
 		virtual ~VertexBuffer() = default;
 
 		virtual void Bind() const = 0;
-		virtual void UnBind() const = 0;
+		virtual void Unbind() const = 0;
+
+		virtual void SetData(const void* data, uint32_t size) = 0;
 
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
-		virtual void SetData(const void* data, uint32_t size) = 0;
-
 		static Ref<VertexBuffer> Create(uint32_t size);
-		static Ref<VertexBuffer> Create(float* vertices , uint32_t size);
+		static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
 	};
 
 	// Currently Hazel only supports 32-bit index buffers
 	class IndexBuffer
 	{
 	public:
-		virtual ~IndexBuffer() {}
+		virtual ~IndexBuffer() = default;
 
 		virtual void Bind() const = 0;
-		virtual void UnBind() const = 0;
+		virtual void Unbind() const = 0;
+
 		virtual uint32_t GetCount() const = 0;
-		
+
 		static Ref<IndexBuffer> Create(uint32_t* indices, uint32_t count);
 	};
+
 }

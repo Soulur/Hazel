@@ -22,7 +22,7 @@ public:
 };
 
 
-Hazel::Application* Hazel::CreatApplication()
+Hazel::Application* Hazel::CreateApplication()
 {
 	return new Sandbox();
 }

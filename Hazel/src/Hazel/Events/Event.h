@@ -1,5 +1,4 @@
 #pragma once
-
 #include <functional>
 
 #include "Hazel/Debug/Instrumentor.h"
@@ -14,16 +13,16 @@ namespace Hazel {
 
 	enum class EventType
 	{
-		Node = 0,
-		WindowClose , WindowResize , WindowFocus , WindowLostFocus , WindowMoved ,
-		AppTick , AppUpdate , AppRender ,
-		KeyPressed , KeyReleased , KeyType ,
-		MouseButtonPressed , MouseButtonReleased , MouseMoved , MouseScrolled
+		None = 0,
+		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
+		AppTick, AppUpdate, AppRender,
+		KeyPressed, KeyReleased, KeyTyped,
+		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 
 	enum EventCategory
 	{
-		Node = 0,
+		None = 0,
 		EventCategoryApplication		= BIT(0),
 		EventCategoryInput				= BIT(1),
 		EventCategoryKeyboard			= BIT(2),
@@ -63,7 +62,7 @@ namespace Hazel {
 			: m_Event(event)
 		{
 		}
-
+		
 		// F will be deduced by the compiler
 		template<typename T, typename F>
 		bool Dispatch(const F& func)

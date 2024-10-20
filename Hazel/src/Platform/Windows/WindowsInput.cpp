@@ -6,10 +6,10 @@
 
 namespace Hazel {
 
-	bool Input::IsKeyPressed(const KeyCode keycode)
+	bool Input::IsKeyPressed(const KeyCode key)
 	{
-		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		auto state = glfwGetKey(window, static_cast<int32_t>(keycode));
+		auto* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+		auto state = glfwGetKey(window, static_cast<int32_t>(key));
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
@@ -26,7 +26,7 @@ namespace Hazel {
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
 
-		return { (float)xpos , (float)ypos };
+		return { (float)xpos, (float)ypos };
 	}
 
 	float Input::GetMouseX()
@@ -38,4 +38,5 @@ namespace Hazel {
 	{
 		return GetMousePosition().y;
 	}
+
 }

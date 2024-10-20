@@ -12,7 +12,7 @@ namespace Hazel {
 		RGBA8,
 		RED_INTEGER,
 
-		// Depth/tenci1
+		// Depth/stencil
 		DEPTH24STENCIL8,
 
 		// Defaults
@@ -26,13 +26,13 @@ namespace Hazel {
 			: TextureFormat(format) {}
 
 		FramebufferTextureFormat TextureFormat = FramebufferTextureFormat::None;
-		// TODO: filtering/Wrap
+		// TODO: filtering/wrap
 	};
 
 	struct FramebufferAttachmentSpecification
 	{
 		FramebufferAttachmentSpecification() = default;
-		FramebufferAttachmentSpecification(const std::initializer_list<FramebufferTextureSpecification> attachments)
+		FramebufferAttachmentSpecification(std::initializer_list<FramebufferTextureSpecification> attachments)
 			: Attachments(attachments) {}
 
 		std::vector<FramebufferTextureSpecification> Attachments;
@@ -55,7 +55,7 @@ namespace Hazel {
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 
-		virtual void Resize(uint32_t width , uint32_t height) = 0;
+		virtual void Resize(uint32_t width, uint32_t height) = 0;
 		virtual int ReadPixel(uint32_t attachmentIndex, int x, int y) = 0;
 
 		virtual void ClearAttachment(uint32_t attachmentIndex, int value) = 0;
@@ -66,5 +66,6 @@ namespace Hazel {
 
 		static Ref<Framebuffer> Create(const FramebufferSpecification& spec);
 	};
+
 
 }

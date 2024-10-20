@@ -7,29 +7,29 @@ namespace Hazel {
 	class SceneCamera : public Camera
 	{
 	public:
-		enum class ProjectionType
-		{
-			Perspective = 0, Orthographic = 1
+		enum class ProjectionType 
+		{ 
+			Perspective = 0, Orthographic = 1 
 		};
 	public:
 		SceneCamera();
 		virtual ~SceneCamera() = default;
 
-		void SetPerspective(float verticalFOV, float nearClip, float FarClip);
-		void SetOrthographic(float size, float nearClip, float FarClip);
+		void SetPerspective(float verticalFOV, float nearClip, float farClip);
+		void SetOrthographic(float size, float nearClip, float farClip);
 
 		void SetViewportSize(uint32_t width, uint32_t height);
 
 		//======================   Perspective  ==============================
 		float GetPerspectiveVerticalFOV() const { return m_PerspectiveFOV; }
-		void SetPerspectiveVerticalFOV(float verticalfov) { m_PerspectiveFOV = verticalfov;  RecalculateProjection(); }
+		void SetPerspectiveVerticalFOV(float verticalFov) { m_PerspectiveFOV = verticalFov; RecalculateProjection(); }
 		float GetPerspectiveNearClip() const { return m_PerspectiveNear; }
 		void SetPerspectiveNearClip(float nearClip) { m_PerspectiveNear = nearClip; RecalculateProjection(); }
 		float GetPerspectiveFarClip() const { return m_PerspectiveFar; }
 		void SetPerspectiveFarClip(float farClip) { m_PerspectiveFar = farClip; RecalculateProjection(); }
 		//======================   Orthographic  ==============================
 		float GetOrthographicSize() const { return m_OrthographicSize; }
-		void SetOrthographicSize(float size) { m_OrthographicSize = size;  RecalculateProjection(); }
+		void SetOrthographicSize(float size) { m_OrthographicSize = size; RecalculateProjection(); }
 		float GetOrthographicNearClip() const { return m_OrthographicNear; }
 		void SetOrthographicNearClip(float nearClip) { m_OrthographicNear = nearClip; RecalculateProjection(); }
 		float GetOrthographicFarClip() const { return m_OrthographicFar; }

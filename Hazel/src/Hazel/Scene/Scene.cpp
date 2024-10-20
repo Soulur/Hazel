@@ -1,7 +1,7 @@
 #include "hzpch.h"
 #include "Scene.h"
 
-#include "Component.h"
+#include "Components.h"
 #include "Hazel/Renderer/Renderer2D.h"
 
 #include <glm/glm.hpp>
@@ -20,7 +20,7 @@ namespace Hazel {
 
 	Entity Scene::CreateEntity(const std::string& name)
 	{
-		Entity entity = { m_Registry.create() , this };
+		Entity entity = { m_Registry.create(), this };
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Entity" : name;
@@ -37,31 +37,32 @@ namespace Hazel {
 		// Update scripts
 		{
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+			{
+				// TODO: Move to Scene::OnScenePlay
+				if (!nsc.Instance)
 				{
-					// TODO: Move to Scene: OnScenePlay; 
-					if (!nsc.Instance)
-					{
-						nsc.Instance = nsc.InstantiateScript();
-						nsc.Instance->m_Entity = Entity{ entity, this };
-						nsc.Instance->OnCreate();
-					}
-					nsc.Instance->OnUpdate(ts);
-				});
+					nsc.Instance = nsc.InstantiateScript();
+					nsc.Instance->m_Entity = Entity{ entity, this };
+					nsc.Instance->OnCreate();
+				}
+
+				nsc.Instance->OnUpdate(ts);
+			});
 		}
 
-
+		// Render 2D
 		Camera* mainCamera = nullptr;
-		glm::mat4 mainTransform;
+		glm::mat4 cameraTransform;
 		{
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view)
 			{
 				auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
-
+				
 				if (camera.Primary)
 				{
 					mainCamera = &camera.Camera;
-					mainTransform = transform.GetTransform();
+					cameraTransform = transform.GetTransform();
 					break;
 				}
 			}
@@ -69,18 +70,19 @@ namespace Hazel {
 
 		if (mainCamera)
 		{
-			Renderer2D::BeginScene(*mainCamera, mainTransform);
+			Renderer2D::BeginScene(*mainCamera, cameraTransform);
 
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 			for (auto entity : group)
 			{
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-				Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 			}
 
 			Renderer2D::EndScene();
 		}
+
 	}
 
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
@@ -92,7 +94,7 @@ namespace Hazel {
 		{
 			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-			Renderer2D::DrawQuadSprite(transform.GetTransform(), sprite, (int)entity);
+			Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 		}
 
 		Renderer2D::EndScene();
@@ -103,7 +105,7 @@ namespace Hazel {
 		m_ViewportWidth = width;
 		m_ViewportHeight = height;
 
-		// Resize our non-FixedAspectRatio camera;
+		// Resize our non-FixedAspectRatio cameras
 		auto view = m_Registry.view<CameraComponent>();
 		for (auto entity : view)
 		{
@@ -111,17 +113,17 @@ namespace Hazel {
 			if (!cameraComponent.FixedAspectRatio)
 				cameraComponent.Camera.SetViewportSize(width, height);
 		}
+
 	}
 
 	Entity Scene::GetPrimaryCameraEntity()
 	{
 		auto view = m_Registry.view<CameraComponent>();
-
 		for (auto entity : view)
 		{
 			const auto& camera = view.get<CameraComponent>(entity);
 			if (camera.Primary)
-				return Entity{ entity , this };
+				return Entity{entity, this};
 		}
 		return {};
 	}
@@ -157,5 +159,6 @@ namespace Hazel {
 	void Scene::OnComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
 	{
 	}
+
 
 }

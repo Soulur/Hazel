@@ -2,7 +2,7 @@
 #include "SceneSerializer.h"
 
 #include "Hazel/Scene/Entity.h"
-#include "Hazel/Scene/Component.h"
+#include "Hazel/Scene/Components.h"
 
 #include <fstream>
 
@@ -87,20 +87,19 @@ namespace Hazel {
 
 	static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
-		out << YAML::BeginMap;
+		out << YAML::BeginMap; // Entity
 		out << YAML::Key << "Entity" << YAML::Value << "122311371931923132"; // TODO: Entity ID goes here
 
 		if (entity.HasComponent<TagComponent>())
 		{
 			out << YAML::Key << "TagComponent";
 			out << YAML::BeginMap; // TagComponent
-			
+
 			auto& tag = entity.GetComponent<TagComponent>().Tag;
 			out << YAML::Key << "Tag" << YAML::Value << tag;
 
 			out << YAML::EndMap; // TagComponent
 		}
-
 
 		if (entity.HasComponent<TransformComponent>())
 		{
@@ -124,15 +123,15 @@ namespace Hazel {
 			auto& camera = cameraComponent.Camera;
 
 			out << YAML::Key << "Camera" << YAML::Value;
-			out << YAML::BeginMap;	// Camera
-			out << YAML::Key << "ProjectionType"			<< YAML::Value << (int)camera.GetProjectionType();
+			out << YAML::BeginMap; // Camera
+			out << YAML::Key << "ProjectionType" << YAML::Value << (int)camera.GetProjectionType();
 			out << YAML::Key << "PerspectiveFOV" << YAML::Value << camera.GetPerspectiveVerticalFOV();
 			out << YAML::Key << "PerspectiveNear" << YAML::Value << camera.GetPerspectiveNearClip();
 			out << YAML::Key << "PerspectiveFar" << YAML::Value << camera.GetPerspectiveFarClip();
 			out << YAML::Key << "OrthographicSize" << YAML::Value << camera.GetOrthographicSize();
 			out << YAML::Key << "OrthographicNear" << YAML::Value << camera.GetOrthographicNearClip();
-			out << YAML::Key << "OrthographicFar"	<< YAML::Value << camera.GetOrthographicFarClip();
-			out << YAML::EndMap;	// Camera
+			out << YAML::Key << "OrthographicFar" << YAML::Value << camera.GetOrthographicFarClip();
+			out << YAML::EndMap; // Camera
 
 			out << YAML::Key << "Primary" << YAML::Value << cameraComponent.Primary;
 			out << YAML::Key << "FixedAspectRatio" << YAML::Value << cameraComponent.FixedAspectRatio;
@@ -144,8 +143,10 @@ namespace Hazel {
 		{
 			out << YAML::Key << "SpriteRendererComponent";
 			out << YAML::BeginMap; // SpriteRendererComponent
+
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
+
 			out << YAML::EndMap; // SpriteRendererComponent
 		}
 
@@ -159,13 +160,13 @@ namespace Hazel {
 		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
 		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 		m_Scene->m_Registry.each([&](auto entityID)
-			{
-				Entity entity = { entityID , m_Scene.get() };
-				if (!entity)
-					return;
+		{
+			Entity entity = { entityID, m_Scene.get() };
+			if (!entity)
+				return;
 
-				SerializeEntity(out, entity);
-			});
+			SerializeEntity(out, entity);
+		});
 		out << YAML::EndSeq;
 		out << YAML::EndMap;
 
@@ -193,7 +194,7 @@ namespace Hazel {
 		{
 			for (auto entity : entities)
 			{
-				uint64_t uuid = entity["Entity"].as<uint64_t>();	// TODO
+				uint64_t uuid = entity["Entity"].as<uint64_t>(); // TODO
 
 				std::string name;
 				auto tagComponent = entity["TagComponent"];
@@ -218,14 +219,18 @@ namespace Hazel {
 				if (cameraComponent)
 				{
 					auto& cc = deserializedEntity.AddComponent<CameraComponent>();
+
 					auto& cameraProps = cameraComponent["Camera"];
 					cc.Camera.SetProjectionType((SceneCamera::ProjectionType)cameraProps["ProjectionType"].as<int>());
+
 					cc.Camera.SetPerspectiveVerticalFOV(cameraProps["PerspectiveFOV"].as<float>());
 					cc.Camera.SetPerspectiveNearClip(cameraProps["PerspectiveNear"].as<float>());
 					cc.Camera.SetPerspectiveFarClip(cameraProps["PerspectiveFar"].as<float>());
+
 					cc.Camera.SetOrthographicSize(cameraProps["OrthographicSize"].as<float>());
 					cc.Camera.SetOrthographicNearClip(cameraProps["OrthographicNear"].as<float>());
 					cc.Camera.SetOrthographicFarClip(cameraProps["OrthographicFar"].as<float>());
+
 					cc.Primary = cameraComponent["Primary"].as<bool>();
 					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
 				}
@@ -238,6 +243,7 @@ namespace Hazel {
 				}
 			}
 		}
+
 		return true;
 	}
 

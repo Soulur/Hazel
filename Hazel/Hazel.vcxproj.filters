@@ -147,7 +147,7 @@
     <ClInclude Include="src\Hazel\Renderer\GraphicsContext.h">
       <Filter>src\Hazel\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hazel\Renderer\OrthoGraphicCamera.h">
+    <ClInclude Include="src\Hazel\Renderer\OrthographicCamera.h">
       <Filter>src\Hazel\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Hazel\Renderer\OrthographicCameraController.h">
@@ -174,7 +174,7 @@
     <ClInclude Include="src\Hazel\Renderer\VertexArray.h">
       <Filter>src\Hazel\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hazel\Scene\Component.h">
+    <ClInclude Include="src\Hazel\Scene\Components.h">
       <Filter>src\Hazel\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Hazel\Scene\Entity.h">
@@ -1514,7 +1514,7 @@
     <ClCompile Include="src\Hazel\Renderer\GraphicsContext.cpp">
       <Filter>src\Hazel\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hazel\Renderer\OrthoGraphicCamera.cpp">
+    <ClCompile Include="src\Hazel\Renderer\OrthographicCamera.cpp">
       <Filter>src\Hazel\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Hazel\Renderer\OrthographicCameraController.cpp">

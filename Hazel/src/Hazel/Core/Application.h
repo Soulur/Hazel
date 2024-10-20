@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Base.h"
+#include "Hazel/Core/Base.h"
 
-#include "Window.h"
+#include "Hazel/Core/Window.h"
 #include "Hazel/Core/LayerStack.h"
 #include "Hazel/Events/Event.h"
 #include "Hazel/Events/ApplicationEvent.h"
@@ -24,14 +24,15 @@ namespace Hazel {
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* overlay);
+		void PushOverlay(Layer* layer);
+
+		Window& GetWindow() { return *m_Window; }
 
 		void Close();
 
 		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
-		Window& GetWindow() { return *m_Window; }
 
-		static Application& Get() { return *s_Instace; }
+		static Application& Get() { return *s_Instance; }
 	private:
 		void Run();
 		bool OnWindowClose(WindowCloseEvent& e);
@@ -42,15 +43,13 @@ namespace Hazel {
 		bool m_Running = true;
 		bool m_Minimized = false;
 		LayerStack m_LayerStack;
-		Timestep m_Timestep;
 		float m_LastFrameTime = 0.0f;
 	private:
-		static Application* s_Instace;
-		friend int::main(int argc, char** argv);
+		static Application* s_Instance;
+		friend int ::main(int argc, char** argv);
 	};
 
 	// To be defined in CLIENT
-	Application* CreatApplication();
+	Application* CreateApplication();
 
 }
-

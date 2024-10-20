@@ -1,21 +1,30 @@
 #include "hzpch.h"
-#include "OrthographicCameraController.h"
+#include "Hazel/Renderer/OrthographicCameraController.h"
 
 #include "Hazel/Core/Input.h"
 #include "Hazel/Core/KeyCodes.h"
-#include "Hazel/Renderer/Renderer.h"
 
 namespace Hazel {
 
-	OrthographicCameraController::OrthographicCameraController(float aspectRatio , bool rotation)
-		: m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel) ,
-		  m_AspectRatio(aspectRatio) , m_Rotation(rotation)
+	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
+		: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
 	{
 	}
 
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
 		HZ_PROFILE_FUNCTION();
+
+		if (Input::IsKeyPressed(Key::A))
+		{
+			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
+			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
+		}
+		else if (Input::IsKeyPressed(Key::D))
+		{
+			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
+			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
+		}
 
 		if (Input::IsKeyPressed(Key::W))
 		{
@@ -28,22 +37,11 @@ namespace Hazel {
 			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
 
-		if (Input::IsKeyPressed(Key::D))
-		{
-			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-		}
-		else if (Input::IsKeyPressed(Key::A))
-		{
-			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-		}
-
 		if (m_Rotation)
 		{
 			if (Input::IsKeyPressed(Key::Q))
 				m_CameraRotation += m_CameraRotationSpeed * ts;
-			else if (Input::IsKeyPressed(Key::E ))
+			if (Input::IsKeyPressed(Key::E))
 				m_CameraRotation -= m_CameraRotationSpeed * ts;
 
 			if (m_CameraRotation > 180.0f)
@@ -55,7 +53,7 @@ namespace Hazel {
 		}
 
 		m_Camera.SetPosition(m_CameraPosition);
-		
+
 		m_CameraTranslationSpeed = m_ZoomLevel;
 	}
 

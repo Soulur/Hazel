@@ -1,10 +1,7 @@
 #include "hzpch.h"
-#include "LayerStack.h"
+#include "Hazel/Core/LayerStack.h"
 
 namespace Hazel {
-	LayerStack::LayerStack()
-	{
-	}
 
 	LayerStack::~LayerStack()
 	{
@@ -44,7 +41,6 @@ namespace Hazel {
 		{
 			overlay->OnDetach();
 			m_Layers.erase(it);
-
 		}
 	}
 

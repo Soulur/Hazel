@@ -3,9 +3,9 @@
 #include "Hazel/Core/PlatformDetection.h"
 
 #ifdef HZ_PLATFORM_WINDOWS
-		#ifndef NOMINMAX
-			// See github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
-			#define NOMINMAX
+	#ifndef NOMINMAX
+		// See github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
+		#define NOMINMAX
 	#endif
 #endif // HZ_PLATFORM_WINDOWS
 
@@ -29,5 +29,5 @@
 #include "Hazel/Debug/Instrumentor.h"
 
 #ifdef HZ_PLATFORM_WINDOWS
-		#include <Windows.h>
+	#include <Windows.h>
 #endif
